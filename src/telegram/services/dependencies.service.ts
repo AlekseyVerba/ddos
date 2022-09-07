@@ -8,7 +8,7 @@ export class DependenciesService {
     constructor(
         private notificationService: NotificationService
     ) {}
-
+// 
     async checkAllDependencies(chatID: number) {
         const resultDocker = await this.checkDocker();
         // const resultScreen = await this.checkScreen();
