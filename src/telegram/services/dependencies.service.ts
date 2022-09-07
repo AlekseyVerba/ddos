@@ -1,19 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { exec } from 'child_process';
+import { NotificationService } from './notification.service';
 
 @Injectable()
 export class DependenciesService {
 
+    constructor(
+        private notificationService: NotificationService
+    ) {}
+
     async checkAllDependencies(chatID: number) {
         const resultDocker = await this.checkDocker();
-        const resultScreen = await this.checkScreen();
-        console.log(resultDocker);
-        console.log(resultScreen);
+        // const resultScreen = await this.checkScreen();
         if(resultDocker) {
             this.startDocker();
         }
 
-        return resultDocker && resultScreen;
+        this.notificationService.checkAllDependenciesForBombardier(chatID, resultDocker);
 
     }
 
@@ -25,7 +28,7 @@ export class DependenciesService {
                 if (err === null) {
                     resolve(true);
                 } else {
-                    const resultDownloadScreen = await this.downloadDocker();
+                    const resultDownloadScreen = await this.installDocker();
                     if (resultDownloadScreen) {
                         const result = await this.checkDocker();
                         resolve(result);
@@ -67,18 +70,18 @@ export class DependenciesService {
         })
     }
 
-    async downloadDocker() {
-        return new Promise((resolve, reject) => {
-            exec('curl -fsSL https://get.docker.com -o get-docker.sh', async (err, stdout, stderr) => {
-                console.log('downlaod ' + err)
-                if (err === null) {
-                    const resultInstall = await this.installDocker();
-                    resolve(resultInstall);
-                }
-                resolve(false);
-            })
-        })
-    }
+    // async downloadDocker() {
+    //     return new Promise((resolve, reject) => {
+    //         exec('curl -fsSL https://get.docker.com -o get-docker.sh', async (err, stdout, stderr) => {
+    //             console.log('downlaod ' + err)
+    //             if (err === null) {
+    //                 const resultInstall = await this.installDocker();
+    //                 resolve(resultInstall);
+    //             }
+    //             resolve(false);
+    //         })
+    //     })
+    // }
 
     async installDocker() {
         return new Promise((resolve, reject) => {

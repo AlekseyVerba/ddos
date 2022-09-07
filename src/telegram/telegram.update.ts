@@ -25,16 +25,9 @@ export class TelegramUpdate {
     @Hears('Bombardier')
     async bombardier(ctx: MainContext) {
         this.clearSession(ctx);
+        const id = ctx.from.id;
         await ctx.reply("I'm checking all the dependencies and downloading missing it. Wait please");
-        const result = await this.dependenciesService.checkAllDependencies(111);
-        console.log('result ' + result)
-        if (result) {
-            ctx.session.typeDdos = 'bombardier';
-            ctx.session.action = 'url';
-            await ctx.reply('Everything is good! Provide a website\'s url');
-        } else {
-            await ctx.reply('An error has occurred! try later');
-        }
+        this.dependenciesService.checkAllDependencies(id);
     }
 
     @Action(/ddos:bombardier/) 
