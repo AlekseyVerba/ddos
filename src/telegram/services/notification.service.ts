@@ -1,0 +1,18 @@
+import { Injectable } from '@nestjs/common';
+import { InjectBot } from 'nestjs-telegraf';
+import { MainContext } from 'src/interfaces/context.interface';
+import { Telegraf } from 'telegraf';
+import { TelegramMessageService } from './telegramMessage.service';
+
+@Injectable()
+export class NotificationService {
+    constructor(
+        @InjectBot() private bot: Telegraf<MainContext>,
+        private telegramMessageService: TelegramMessageService
+    ) {}
+
+    finishBombardier(id: number, url: string, time: number, repeat: number, result: boolean[]) {
+        const message = this.telegramMessageService.finishBombardier(url, time, repeat, result);
+        this.bot.telegram.sendMessage(id, message)
+    }
+}
