@@ -27,7 +27,7 @@ export class TelegramUpdate {
         this.clearSession(ctx);
         const id = ctx.from.id;
         await ctx.reply("I'm checking all the dependencies and downloading missing it. Wait please");
-        this.dependenciesService.checkAllDependencies(id);
+        this.dependenciesService.checkAllDependencies(id, ctx);
     }
 
     @Action(/ddos:bombardier/) 

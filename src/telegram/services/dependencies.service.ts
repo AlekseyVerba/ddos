@@ -8,16 +8,17 @@ export class DependenciesService {
     constructor(
         private notificationService: NotificationService
     ) {}
-// 
-    async checkAllDependencies(chatID: number) {
+
+    async checkAllDependencies(chatID: number, ctx) {
         const resultDocker = await this.checkDocker();
         // const resultScreen = await this.checkScreen();
         if(resultDocker) {
             this.startDocker();
+            ctx.session.typeDdos = 'bombardier';
+            ctx.session.action = 'url';
         }
 
         this.notificationService.checkAllDependenciesForBombardier(chatID, resultDocker);
-
     }
 
 

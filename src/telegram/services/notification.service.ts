@@ -3,7 +3,7 @@ import { InjectBot } from 'nestjs-telegraf';
 import { MainContext } from 'src/interfaces/context.interface';
 import { Telegraf } from 'telegraf';
 import { TelegramMessageService } from './telegramMessage.service';
-
+//
 @Injectable()
 export class NotificationService {
     constructor(
@@ -18,8 +18,8 @@ export class NotificationService {
 
     checkAllDependenciesForBombardier(id: number, result) {
         if (result) {
-            this.bot.context.session.typeDdos = 'bombardier';
-            this.bot.context.session.action = 'url';
+            // console.log(this.bot.context);
+
             this.bot.telegram.sendMessage(id, 'Everything is good! Provide a website\'s url');
         } else {
             this.bot.telegram.sendMessage(id,'An error has occurred! try later');
